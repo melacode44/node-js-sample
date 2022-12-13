@@ -1,16 +1,16 @@
-version: 2.1
+#version: 2.1
 #on veut build une docker image avec le yml
-jobs:
-  build:
-    docker:
+#jobs:
+  #build:
+    #docker:
     #on prend une image de base, dernière version connue
-      - image: cimg/base:current
+      #- image: cimg/base:current
 #première action   
-    steps:
-      - checkout
+    #steps:
+     # - checkout
      # - run: echo "en train de construire le docker"
-      - run: cd /node-js-sample
-      - run: sudo docker build -t app_node_js . 
+     # - run: cd /node-js-sample
+     # - run: sudo docker build -t app_node_js . 
   #test:
   #  docker:
     #  - image: cimg/base:current
@@ -24,9 +24,29 @@ jobs:
       #  - image: cimg/base:current
         
 #on créer notre job run sequence
-workflows:
-  build_and_test:
-    jobs:
-      - build
+#workflows:
+  #build_and_test:
+   # jobs:
+      #- build
    
   
+version: 2.1
+jobs:
+  build:
+    environment:
+      IMAGE_NAME: matthisfoulonneau/node-js-sample
+    machine:
+      - image: ubuntu-2204:2022.10.2
+    steps:
+      - checkout
+      - run:
+          name: Build Docker image
+          command: docker build -t $IMAGE_NAME:latest .
+      - run:
+          name: Testing docker image
+          command: docker run --rm -d --name=test -p 8080:8080 $IMAGE_NAME:latest && curl --retry 10 --retry-all-errors --retry-delay 5 -v http://localhost:8080
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGE_NAME:latest
