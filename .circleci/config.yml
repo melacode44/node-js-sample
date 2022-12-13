@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     environment:
-      IMAGE_NAME: matthisfoulonneau/node-js-sample
+      IMAGE_NAME: melacode44/node-js-sample
     machine:
       - image: ubuntu-2204:2022.10.2
     steps:
