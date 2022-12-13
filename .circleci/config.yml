@@ -1,35 +1,3 @@
-#version: 2.1
-#on veut build une docker image avec le yml
-#jobs:
-  #build:
-    #docker:
-    #on prend une image de base, dernière version connue
-      #- image: cimg/base:current
-#première action   
-    #steps:
-     # - checkout
-     # - run: echo "en train de construire le docker"
-     # - run: cd /node-js-sample
-     # - run: sudo docker build -t app_node_js . 
-  #test:
-  #  docker:
-    #  - image: cimg/base:current
- #deuxième action
-   # steps: 
-    #  - checkout
-      #- run: echo "en train de run le docker"
-     # - run : sudo docker run -p 8080:8080 app_node_js
-   # test:
-      #docker:
-      #  - image: cimg/base:current
-        
-#on créer notre job run sequence
-#workflows:
-  #build_and_test:
-   # jobs:
-      #- build
-   
-  
 version: 2.1
 jobs:
   build:
